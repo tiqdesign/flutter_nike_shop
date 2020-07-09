@@ -7,11 +7,9 @@ import 'package:nikeshop/Models/Shoes.dart';
 import 'package:nikeshop/Services/HexColor.dart';
 
 class NikeItem extends StatefulWidget {
-
   const NikeItem({
     Key key,
     @required this.shoes,
-
   }) : super(key: key);
 
   final Shoes shoes;
@@ -20,14 +18,70 @@ class NikeItem extends StatefulWidget {
   _NikeItemState createState() => _NikeItemState();
 }
 
-class _NikeItemState extends State<NikeItem> {
-
+class _NikeItemState extends State<NikeItem>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animateIcon;
+  Animation<Color> _animateColor;
+  Animation<Color> _animateIconColor;
+  Curve _curve = Curves.easeIn;
+  bool isAdded = false;
   cn_Colors colors;
+
+  animate() {
+    if (!isAdded) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+    isAdded = !isAdded;
+  }
 
   @override
   void initState() {
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300))
+          ..addListener(() {
+            setState(() {});
+          });
+
+    //Change icon size
+    _animateIcon = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+
+    //For Floating Action Button
+    _animateColor = ColorTween(
+      begin: Color(0xfff6c90e),
+      end: Colors.green,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.00,
+        1.00,
+        curve: _curve,
+      ),
+    ));
+
+    //For icon color
+    _animateIconColor = ColorTween(
+      begin: Colors.black87,
+      end: Colors.white70,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.00,
+        1.00,
+        curve: _curve,
+      ),
+    ));
+
     super.initState();
     colors = new cn_Colors();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,7 +104,7 @@ class _NikeItemState extends State<NikeItem> {
                 child: Transform.rotate(
                     angle: pi / 4 - 20,
                     child: Transform.translate(
-                      offset: Offset(-20,0),
+                      offset: Offset(-20, 0),
                       child: Image.network(
                         widget.shoes.image,
                         width: 400,
@@ -91,21 +145,42 @@ class _NikeItemState extends State<NikeItem> {
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       widget.shoes.price.toString(),
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800),
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                     ),
                     FloatingActionButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        animate();
+                      },
                       elevation: 0,
-                      backgroundColor: colors.yellow,
-                      child: Icon(Icons.check,
-                          size: 30, color: colors.black),
+                      backgroundColor: _animateColor.value,
+                      // This is awesome -- Custom AnimatedIcons
+                      // Stack yapmamın sebebi iki iconu üst üste getirip elimizde bulunan 0-1 arasındaki animasyondan gelen değeri doğru kullanarak hem boyutu değişen
+                      // hemde opacity si azalan bir icon animasyonu elde ettik.
+                      child: Stack(
+                        children:[
+                          Opacity(
+                            opacity : 1 - _animateIcon.value,
+                            child: Icon(
+                              Icons.add_shopping_cart,
+                              color: _animateIconColor.value,
+                              size: 25 - _animateIcon.value * 25,
+                            ),
+                          ),
+                          Opacity(
+                            opacity : _animateIcon.value,
+                            child: Icon(
+                              Icons.shopping_cart,
+                              color: _animateIconColor.value,
+                              size: _animateIcon.value * 25,
+                            ),
+                          ),
+                      ]
+                      ),
                     ),
                   ],
                 ),
