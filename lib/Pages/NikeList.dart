@@ -74,23 +74,24 @@ class _NikeListState extends State<NikeList> {
                             width: 60,
                           ),
                         ),
-                        Badge(
-                            badgeContent: Text(
-                              cartItemsCount.toString(),
-                              style: TextStyle(color: colors.white),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.shopping_cart,
-                                color: colors.yellow,
-                                size: 35,
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, new MaterialPageRoute(
+                                builder:(context) => CartList(list: cartList,)
+                            ));
+                          },
+                          child: Badge(
+                              badgeContent: Text(
+                                cartItemsCount.toString(),
+                                style: TextStyle(color: colors.white),
                               ),
-                              onPressed: () {
-                                Navigator.push(context, new MaterialPageRoute(
-                                    builder:(context) => CartList(list: cartList,)
-                                ));
-                              },
-                            )),
+                              child: Icon(
+                                  Icons.shopping_cart,
+                                  color: colors.yellow,
+                                  size: 35,
+                                ),
+                              ),
+                        ),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),

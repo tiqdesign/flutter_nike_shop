@@ -1,11 +1,11 @@
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nikeshop/Components/ListItem.dart';
 import 'package:nikeshop/Constant/C_Colors.dart';
 import 'package:nikeshop/Models/Shoes.dart';
-import 'package:nikeshop/Services/HexColor.dart';
+import 'package:toast/toast.dart';
+
 
 class CartList extends StatefulWidget {
   final List<Shoes> list;
@@ -43,13 +43,15 @@ class _CartListState extends State<CartList> {
             child: Center(
                 child: Text(
                   totalPrice == 0.0 ? ' 0 ' :
-              totalPrice.toString(),
+              totalPrice.toStringAsFixed(2),
               style: TextStyle(
                   color: color.black,
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
             )),
-            onPressed: () {}),
+            onPressed: () {
+              Toast.show(" Completed! ", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+            }),
         body: Stack(
           children: [
             ClipRRect(
