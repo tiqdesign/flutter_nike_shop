@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nikeshop/Components/NikeItem.dart';
 import 'package:nikeshop/Constant/C_Colors.dart';
+import 'package:nikeshop/Pages/CartList.dart';
 import 'package:nikeshop/Services/NikeService.dart';
 import 'package:nikeshop/Models/Shoes.dart';
-
 
 class NikeList extends StatefulWidget {
   @override
@@ -16,25 +16,34 @@ class _NikeListState extends State<NikeList> {
   cn_Colors colors;
   NikeService _service = new NikeService();
   Future<List<Shoes>> shoes;
+  List<Shoes> cartList;
   int cartItemsCount;
 
-  Function cartItemsChanged(bool isAdded){
+  Function cartItemsChanged(bool isAdded) {
     setState(() {
       isAdded ? cartItemsCount++ : cartItemsCount--;
     });
+  }
+
+  Function addToCart(Shoes shoes){
+    cartList.add(shoes);
+  }
+
+  Function deleteFromCart(Shoes shoes){
+    cartList.remove(shoes);
   }
 
   @override
   void initState() {
     super.initState();
     shoes = _service.getShoes();
+    cartList = new List();
     colors = new cn_Colors();
     cartItemsCount = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: ListView(
         children: [
@@ -66,9 +75,22 @@ class _NikeListState extends State<NikeList> {
                           ),
                         ),
                         Badge(
-                            badgeContent: Text(cartItemsCount.toString(), style: TextStyle(color: colors.white),),
-                            child: Icon(Icons.shopping_cart,color: colors.yellow, size: 35,)
-                        ),
+                            badgeContent: Text(
+                              cartItemsCount.toString(),
+                              style: TextStyle(color: colors.white),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.shopping_cart,
+                                color: colors.yellow,
+                                size: 35,
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, new MaterialPageRoute(
+                                    builder:(context) => CartList(list: cartList,)
+                                ));
+                              },
+                            )),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),
@@ -94,9 +116,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[5],cartItemsChanged :cartItemsChanged );
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[5],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -107,9 +132,13 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[1],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[1],
+                              cartItemsChanged: cartItemsChanged,
+                              addToCart: addToCart,
+                              deleteFromCart: deleteFromCart,
+                          );
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -120,9 +149,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[0],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[0],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -133,9 +165,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[2],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[2],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -146,9 +181,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[3],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[3],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -159,9 +197,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[4],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[4],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -172,9 +213,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[6],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[6],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -185,9 +229,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[7],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[7],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -198,9 +245,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[8],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[8],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),
@@ -211,9 +261,12 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[9],cartItemsChanged :cartItemsChanged);
-                        } else if (snapshot.hasError) {
-                        }
+                          return NikeItem(
+                              shoes: snapshot.data[9],
+                            cartItemsChanged: cartItemsChanged,
+                            addToCart: addToCart,
+                            deleteFromCart: deleteFromCart,);
+                        } else if (snapshot.hasError) {}
                         return CircularProgressIndicator();
                       },
                     ),

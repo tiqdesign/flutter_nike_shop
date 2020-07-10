@@ -10,10 +10,12 @@ class NikeItem extends StatefulWidget {
 
   final Shoes shoes;
   final Function cartItemsChanged;
+  final Function addToCart;
+  final Function deleteFromCart;
 
   const NikeItem({
     Key key,
-    @required this.shoes, this.cartItemsChanged
+    @required this.shoes, this.cartItemsChanged, this.addToCart, this.deleteFromCart
   }) : super(key: key);
 
 
@@ -157,9 +159,11 @@ class _NikeItemState extends State<NikeItem>
                           TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                     ),
                     FloatingActionButton(
-                      onPressed: () {
+                        heroTag: "btn${widget.shoes.id}",
+                        onPressed: () {
                         animate();
                         widget.cartItemsChanged(isAdded);
+                        isAdded ?  widget.addToCart(widget.shoes) :  widget.deleteFromCart(widget.shoes);
                         //increment the number of cart badge
                       },
                       elevation: 0,
