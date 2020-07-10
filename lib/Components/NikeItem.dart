@@ -7,12 +7,15 @@ import 'package:nikeshop/Models/Shoes.dart';
 import 'package:nikeshop/Services/HexColor.dart';
 
 class NikeItem extends StatefulWidget {
-  const NikeItem({
-    Key key,
-    @required this.shoes,
-  }) : super(key: key);
 
   final Shoes shoes;
+  final Function cartItemsChanged;
+
+  const NikeItem({
+    Key key,
+    @required this.shoes, this.cartItemsChanged
+  }) : super(key: key);
+
 
   @override
   _NikeItemState createState() => _NikeItemState();
@@ -27,6 +30,7 @@ class _NikeItemState extends State<NikeItem>
   Curve _curve = Curves.easeIn;
   bool isAdded = false;
   cn_Colors colors;
+
 
   animate() {
     if (!isAdded) {
@@ -63,8 +67,8 @@ class _NikeItemState extends State<NikeItem>
 
     //For icon color
     _animateIconColor = ColorTween(
-      begin: Colors.black87,
-      end: Colors.white70,
+      begin: Colors.black,
+      end: Colors.white,
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Interval(
@@ -155,6 +159,8 @@ class _NikeItemState extends State<NikeItem>
                     FloatingActionButton(
                       onPressed: () {
                         animate();
+                        widget.cartItemsChanged(isAdded);
+                        //increment the number of cart badge
                       },
                       elevation: 0,
                       backgroundColor: _animateColor.value,

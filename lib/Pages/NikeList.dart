@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nikeshop/Components/NikeItem.dart';
@@ -15,12 +16,20 @@ class _NikeListState extends State<NikeList> {
   cn_Colors colors;
   NikeService _service = new NikeService();
   Future<List<Shoes>> shoes;
+  int cartItemsCount;
+
+  Function cartItemsChanged(bool isAdded){
+    setState(() {
+      isAdded ? cartItemsCount++ : cartItemsCount--;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     shoes = _service.getShoes();
     colors = new cn_Colors();
+    cartItemsCount = 0;
   }
 
   @override
@@ -47,12 +56,21 @@ class _NikeListState extends State<NikeList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //Logo
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0),
-                      child: Image.network(
-                        'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1315882/pngwave.png',
-                        width: 60,
-                      ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0),
+                          child: Image.network(
+                            'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1315882/pngwave.png',
+                            width: 60,
+                          ),
+                        ),
+                        Badge(
+                            badgeContent: Text(cartItemsCount.toString(), style: TextStyle(color: colors.white),),
+                            child: Icon(Icons.shopping_cart,color: colors.yellow, size: 35,)
+                        ),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),
                     SizedBox(
                       height: 20.0,
@@ -76,7 +94,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[5]);
+                          return NikeItem(shoes: snapshot.data[5],cartItemsChanged :cartItemsChanged );
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -89,7 +107,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[1]);
+                          return NikeItem(shoes: snapshot.data[1],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -102,7 +120,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[0]);
+                          return NikeItem(shoes: snapshot.data[0],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -115,7 +133,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[2]);
+                          return NikeItem(shoes: snapshot.data[2],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -128,7 +146,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[3]);
+                          return NikeItem(shoes: snapshot.data[3],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -141,7 +159,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[4]);
+                          return NikeItem(shoes: snapshot.data[4],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -154,7 +172,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[6]);
+                          return NikeItem(shoes: snapshot.data[6],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -167,7 +185,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[7]);
+                          return NikeItem(shoes: snapshot.data[7],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -180,7 +198,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[8]);
+                          return NikeItem(shoes: snapshot.data[8],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
@@ -193,7 +211,7 @@ class _NikeListState extends State<NikeList> {
                       future: shoes,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return NikeItem(shoes: snapshot.data[9]);
+                          return NikeItem(shoes: snapshot.data[9],cartItemsChanged :cartItemsChanged);
                         } else if (snapshot.hasError) {
                         }
                         return CircularProgressIndicator();
