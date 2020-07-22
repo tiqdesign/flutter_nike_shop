@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:nikeshop/Constant/C_Colors.dart';
-import 'package:nikeshop/Models/Shoes.dart';
+import 'package:nikeshop/Models/Cart.dart';
 import 'package:nikeshop/Services/HexColor.dart';
 
 class ListItem extends StatelessWidget {
@@ -10,7 +10,7 @@ class ListItem extends StatelessWidget {
     @required this.listItem,
   }) : super(key: key);
 
-  final Shoes listItem;
+  final Cart listItem;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ListItem extends StatelessWidget {
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
-                      color: HexColor(listItem.color),
+                      color: HexColor(listItem.shoes.color),
                       borderRadius:
                       BorderRadius.circular(120)),
                 ),
@@ -38,7 +38,7 @@ class ListItem extends StatelessWidget {
                   child: Transform.translate(
                     offset: Offset(0, 5),
                     child: Image.network(
-                      listItem.image,
+                      listItem.shoes.image,
                       width: 150,
                     ),
                   ),
@@ -56,7 +56,7 @@ class ListItem extends StatelessWidget {
                 CrossAxisAlignment.start,
                 children: [
                   Text(
-                    listItem.name,
+                    listItem.shoes.name,
                     style: TextStyle(
                         color: color.black,
                         fontSize: 26,
@@ -69,7 +69,7 @@ class ListItem extends StatelessWidget {
                     height: 10.0,
                   ),
                   Text(
-                    listItem.price.toString() + ' TL',
+                    listItem.shoes.price.toString() + ' TL',
                     style: TextStyle(
                         color: color.black,
                         fontSize: 24,

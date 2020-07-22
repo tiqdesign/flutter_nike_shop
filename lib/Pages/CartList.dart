@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nikeshop/Blocs/cart_bloc.dart';
 import 'package:nikeshop/Components/ListItem.dart';
 import 'package:nikeshop/Constant/C_Colors.dart';
 import 'package:nikeshop/Models/Shoes.dart';
@@ -8,11 +9,9 @@ import 'package:toast/toast.dart';
 
 
 class CartList extends StatefulWidget {
-  final List<Shoes> list;
 
   const CartList({
     Key key,
-    @required this.list,
   }) : super(key: key);
 
   @override
@@ -23,14 +22,11 @@ class _CartListState extends State<CartList> {
   cn_Colors color;
   double totalPrice = 0;
 
+
   @override
   void initState() {
     color = cn_Colors();
-    setState(() {
-      widget.list.forEach((element) {
-        totalPrice += element.price;
-      });
-    });
+    cartBloc.getAll().forEach((element) {totalPrice += element.shoes.price.toDouble();});
     super.initState();
   }
 
@@ -110,35 +106,42 @@ class _CartListState extends State<CartList> {
                   SizedBox(
                     height: 20,
                   ),
-                  FittedBox(
-                    fit: BoxFit.cover,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - 120,
-                      width: MediaQuery.of(context).size.width,
-                      child: widget.list.length <= 0
-                          ? Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.remove_shopping_cart, color: color.black,size: 40,),
-                                  SizedBox(height: 5,),
-                                  Text(
-                                  'Your Cart Is Empty!',
-                                  style: TextStyle(
-                                      color: color.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24),
-                            ),
-                                ],
-                              ))
-                          : ListView.builder(
-                              itemCount: widget.list.length,
-                              itemBuilder: (context, index) {
-                                var listItem = widget.list[index];
-                                return ListItem(listItem: listItem);
-                              }),
-                    ),
+                  StreamBuilder(
+                    initialData: cartBloc.getAll(),
+                    stream: cartBloc.getStream,
+                    builder: (context, snapshot) {
+                      return FittedBox(
+                        fit: BoxFit.cover,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height - 120,
+                          width: MediaQuery.of(context).size.width,
+                          child: snapshot.data.length <= 0
+                              ? Center(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.remove_shopping_cart, color: color.black,size: 40,),
+                                      SizedBox(height: 5,),
+                                      Text(
+                                      'Your Cart Is Empty!',
+                                      style: TextStyle(
+                                          color: color.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24),
+                                ),
+                                    ],
+                                  ))
+                              :
+                                 ListView.builder(
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder: (context, index) {
+                                        var listItem = snapshot.data[index];
+                                        return ListItem(listItem: listItem);
+                                      }),
+                        ),
+                      );
+                    }
                   ),
                 ],
               ),

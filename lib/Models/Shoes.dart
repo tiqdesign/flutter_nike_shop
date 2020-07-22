@@ -18,7 +18,7 @@ class Shoes {
     this.inCart,
   });
 
-  Shoes fromJson(Map<String, dynamic> json){
+ static Shoes fromJson(Map<String, dynamic> json){
     return Shoes(
       id : json['id'],
       image : json['image'],
